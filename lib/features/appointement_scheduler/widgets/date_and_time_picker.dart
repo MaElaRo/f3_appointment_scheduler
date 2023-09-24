@@ -20,12 +20,14 @@ class _DateAndTimePickerState extends State<DateAndTimePicker> {
   final _dateController = TextEditingController();
   final _phoneController = TextEditingController();
   final _timeController = TextEditingController();
+  final _nameController = TextEditingController();
 
   @override
   void dispose() {
     _dateController.dispose();
     _timeController.dispose();
     _phoneController.dispose();
+    _nameController.dispose();
     super.dispose();
   }
 
@@ -45,6 +47,15 @@ class _DateAndTimePickerState extends State<DateAndTimePicker> {
         ),
         const SizedBox(
           height: 16,
+        ),
+        TextField(
+          decoration: const InputDecoration(
+            labelText: 'Enter name',
+          ),
+          keyboardType: TextInputType.name,
+          autofillHints: const [AutofillHints.name],
+          textInputAction: TextInputAction.done,
+          controller: _nameController,
         ),
         TextField(
           controller: _dateController,
@@ -90,15 +101,15 @@ class _DateAndTimePickerState extends State<DateAndTimePicker> {
         ElevatedButton(
           onPressed: isPhoneNumberFilled
               ? () {
-            context.read<AppointmentCubit>().bookAppointment(
-              Appointment(
-                timeSlot: _mergeDateTimeAndTimeOfDay(
-                  selectedDate,
-                  selectedTime,
-                ),
-              ),
-            );
-          }
+                  context.read<AppointmentCubit>().bookAppointment(
+                        Appointment(
+                          timeSlot: _mergeDateTimeAndTimeOfDay(
+                            selectedDate,
+                            selectedTime,
+                          ),
+                        ),
+                      );
+                }
               : null,
           child: const Text('Book slot!'),
         ),
@@ -106,7 +117,7 @@ class _DateAndTimePickerState extends State<DateAndTimePicker> {
           listener: (blocContext, state) {
             if (state is AppointmentBookingSuccess) {
               SchedulerBinding.instance.addPostFrameCallback(
-                    (_) {
+                (_) {
                   showDialog<AlertDialog>(
                     context: context,
                     builder: (BuildContext context) {
@@ -115,13 +126,7 @@ class _DateAndTimePickerState extends State<DateAndTimePicker> {
                         content: Text('Appointment booked: ${state.code}'),
                         actions: [
                           TextButton(
-                            onPressed: () {
-                              _timeController.clear();
-                              _dateController.clear();
-                              _phoneController.clear();
-                              blocContext.read<AppointmentCubit>().resetState();
-                              Navigator.of(context).pop();
-                            },
+                            onPressed: () => _resetBookingForm(blocContext),
                             child: const Text('OK'),
                           ),
                         ],
@@ -182,5 +187,14 @@ class _DateAndTimePickerState extends State<DateAndTimePicker> {
 
   DateTime _mergeDateTimeAndTimeOfDay(DateTime date, TimeOfDay time) {
     return DateTime(date.year, date.month, date.day, time.hour, time.minute);
+  }
+
+  void _resetBookingForm(BuildContext blocContext) {
+    _timeController.clear();
+    _dateController.clear();
+    _phoneController.clear();
+    _nameController.clear();
+    blocContext.read<AppointmentCubit>().resetState();
+    Navigator.of(context).pop();
   }
 }

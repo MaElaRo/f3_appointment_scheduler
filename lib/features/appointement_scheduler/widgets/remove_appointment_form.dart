@@ -70,13 +70,7 @@ class _RemoveAppointmentFormState extends State<RemoveAppointmentForm> {
                           content: const Text('Appointment was removed'),
                           actions: [
                             TextButton(
-                              onPressed: () {
-                                codeController.clear();
-                                blocContext
-                                    .read<AppointmentCubit>()
-                                    .resetState();
-                                Navigator.of(context).pop(); // Close the dialog
-                              },
+                              onPressed: () => _resetForm(blocContext),
                               child: const Text('OK'),
                             ),
                           ],
@@ -102,5 +96,12 @@ class _RemoveAppointmentFormState extends State<RemoveAppointmentForm> {
         ],
       ),
     );
+  }
+  void _resetForm(BuildContext blocContext){
+    codeController.clear();
+    blocContext
+        .read<AppointmentCubit>()
+        .resetState();
+    Navigator.of(context).pop(); //
   }
 }
