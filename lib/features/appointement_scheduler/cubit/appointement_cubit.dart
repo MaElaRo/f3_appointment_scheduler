@@ -16,9 +16,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     emit(AppointmentBookingInProgress());
 
     try {
-      final isAvailable =
-          await _appointmentService.checkIfAvailable(appointment);
-      if (isAvailable) {
+      if(await _appointmentService.isAvailable(appointment)){
         final code = await _appointmentService.bookAppointment(appointment);
         emit(AppointmentBookingSuccess(code));
       } else {
