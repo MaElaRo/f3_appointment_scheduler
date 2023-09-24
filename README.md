@@ -1,16 +1,13 @@
 # f3_appointment_scheduler
 
-A new Flutter project.
+An appointment scheduling app built with Flutter, Firebase Realtime Database and bloc for F3 Events conference. 
+The Javascript code can be found [here](https://github.com/Vonage-Community/blog-messages_api-node_firebase-appointment_scheduler)
 
-## Getting Started
+## Installation
 
-This project is a starting point for a Flutter application.
+To get this up and running, make sure you rename .env.example to .env and fill out all the environment vars required.
 
-A few resources to get you started if this is your first Flutter project:
+To generate the tokens, run:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```flutter pub get && flutter pub run build_runner build --delete-conflicting-outputs```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
